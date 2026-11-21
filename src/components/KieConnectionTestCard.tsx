@@ -43,7 +43,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
       {/* Card Header */}
       <div className="p-4 sm:p-5 bg-gradient-to-r from-[#171a25] to-[#14161f] border-b border-[#24293a] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 flex-shrink-0">
             <Activity className="w-5 h-5" />
           </div>
           <div>
@@ -68,7 +68,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
                 summary.overallStatus === 'ALL PASSED'
                   ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-400'
                   : summary.overallStatus === 'PARTIAL SUCCESS'
-                  ? 'bg-amber-950/60 border-amber-500/40 text-amber-300'
+                  ? 'bg-violet-950/60 border-violet-500/40 text-violet-300'
                   : 'bg-rose-950/60 border-rose-500/40 text-rose-400'
               }`}
             >
@@ -81,7 +81,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
           <button
             onClick={onRunTest}
             disabled={isRunning || !activeKeyPresent}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:bg-[#202534] text-black disabled:text-slate-500 font-bold text-xs transition shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-violet-500 hover:bg-violet-400 disabled:bg-[#202534] text-black disabled:text-slate-500 font-bold text-xs transition shadow-[0_0_15px_rgba(245,158,11,0.2)]"
           >
             {isRunning ? (
               <>
@@ -103,8 +103,8 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
       {/* Main Content Area */}
       <div className="p-4 sm:p-5 space-y-4">
         {!activeKeyPresent && (
-          <div className="p-3.5 rounded-xl bg-amber-950/30 border border-amber-500/30 flex items-start gap-3 text-xs text-amber-300">
-            <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-violet-950/30 border border-violet-500/30 flex items-start gap-3 text-xs text-violet-300">
+            <AlertTriangle className="w-4 h-4 text-violet-400 flex-shrink-0 mt-0.5" />
             <div>
               <div className="font-bold mb-0.5">API Key Belum Tersedia</div>
               <div>Masukkan minimal satu KIE API key aktif pada tab <strong>API KEY</strong> untuk menjalankan internal connection test.</div>
@@ -114,14 +114,14 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
 
         {/* Progress indicator when running */}
         {isRunning && (
-          <div className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-500/30 flex items-center justify-between text-xs text-amber-300 animate-pulse">
+          <div className="p-3.5 rounded-xl bg-violet-950/20 border border-violet-500/30 flex items-center justify-between text-xs text-violet-300 animate-pulse">
             <div className="flex items-center gap-2">
-              <RefreshCw className="w-4 h-4 animate-spin text-amber-400" />
+              <RefreshCw className="w-4 h-4 animate-spin text-violet-400" />
               <span>
                 Sedang menguji minimal payload secara berurutan: <strong>{testingStep?.currentModel || 'KIE Models'}</strong> ({testingStep?.step || 1}/3)...
               </span>
             </div>
-            <span className="font-mono text-[11px] text-amber-400">DO NOT ROTATE KEY ON 500</span>
+            <span className="font-mono text-[11px] text-violet-400">DO NOT ROTATE KEY ON 500</span>
           </div>
         )}
 
@@ -132,7 +132,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
               summary.overallStatus === 'ALL PASSED'
                 ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
                 : summary.overallStatus === 'PARTIAL SUCCESS'
-                ? 'bg-amber-950/20 border-amber-500/30 text-amber-200'
+                ? 'bg-violet-950/20 border-violet-500/30 text-violet-200'
                 : 'bg-rose-950/20 border-rose-500/30 text-rose-200'
             }`}
           >
@@ -189,12 +189,12 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
                     isSuccess
                       ? 'bg-[#0f141f] border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.06)]'
                       : res.httpStatus === 500
-                      ? 'bg-[#18131a] border-amber-500/40'
+                      ? 'bg-[#18131a] border-violet-500/40'
                       : 'bg-[#181014] border-rose-500/40'
                   }`}
                 >
                   {/* Model Header */}
-                  <div className="space-y-1.5 border-b border-[#222736] pb-2.5">
+                  <div className="space-y-1.5 border-b border-[#342544] pb-2.5">
                     <div className="flex items-center justify-between">
                       <h4 className="font-extrabold text-sm text-white">{res.modelName}</h4>
                       <span
@@ -224,7 +224,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
                       </span>
                       {res.latencyMs !== undefined && (
                         <span className="flex items-center gap-1 text-slate-500">
-                          <Zap className="w-3 h-3 text-amber-400/80" />
+                          <Zap className="w-3 h-3 text-violet-400/80" />
                           <span>{res.latencyMs} ms</span>
                         </span>
                       )}
@@ -251,7 +251,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
                           isSuccess
                             ? 'text-emerald-300'
                             : res.httpStatus === 500
-                            ? 'text-amber-300'
+                            ? 'text-violet-300'
                             : 'text-rose-300'
                         }`}
                       >
@@ -275,7 +275,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
                         onClick={() => toggleSafeBody(res.gatewayId)}
                         className="text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition font-mono"
                       >
-                        <Terminal className="w-3 h-3 text-amber-400" />
+                        <Terminal className="w-3 h-3 text-violet-400" />
                         <span>{isShownBody ? 'Tutup Response Body' : 'Safe Response Body'}</span>
                       </button>
 
@@ -294,7 +294,7 @@ export const KieConnectionTestCard: React.FC<KieConnectionTestCardProps> = ({
 
         {/* Footer info */}
         {summary && (
-          <div className="pt-2 border-t border-[#222736] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-400">
+          <div className="pt-2 border-t border-[#342544] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-400">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span>

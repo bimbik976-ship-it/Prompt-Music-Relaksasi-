@@ -60,7 +60,7 @@ export const TracklistView: React.FC<TracklistViewProps> = ({
       <div className="rounded-2xl bg-gradient-to-r from-[#171a24] to-[#14161f] border border-[#272d3e] p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-mono uppercase tracking-widest text-amber-400 font-bold px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/25">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-violet-400 font-bold px-2 py-0.5 rounded bg-violet-500/10 border border-violet-500/25">
               TRACKLIST RESMI
             </span>
             <span className="text-xs text-slate-400">Hanya Menyimpan Prompt Berhasil</span>
@@ -76,7 +76,7 @@ export const TracklistView: React.FC<TracklistViewProps> = ({
             <>
               <button
                 onClick={handleCopyAll}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs transition shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-violet-500 hover:bg-violet-400 text-black font-bold text-xs transition shadow-[0_0_15px_rgba(245,158,11,0.2)]"
               >
                 {copiedAll ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedAll ? 'Semua Tersalin!' : 'Copy All Prompts'}</span>
@@ -116,8 +116,8 @@ export const TracklistView: React.FC<TracklistViewProps> = ({
 
       {/* Empty State */}
       {tracks.length === 0 ? (
-        <div className="rounded-2xl border border-[#232736] bg-[#141720] p-12 text-center space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 mx-auto">
+        <div className="rounded-2xl border border-[#232736] bg-[#241A35] p-12 text-center space-y-3">
+          <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400 mx-auto">
             <ListMusic className="w-6 h-6" />
           </div>
           <h3 className="font-bold text-base text-white">Tracklist Masih Kosong</h3>
@@ -135,12 +135,12 @@ export const TracklistView: React.FC<TracklistViewProps> = ({
             return (
               <div
                 key={track.id}
-                className="rounded-2xl bg-[#141720] border border-[#252a3a] p-4 sm:p-5 space-y-4 transition hover:border-[#353c52]"
+                className="rounded-2xl bg-[#241A35] border border-[#403052] p-4 sm:p-5 space-y-4 transition hover:border-[#353c52]"
               >
                 {/* Track Card Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#222736] pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#342544] pb-3">
                   <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-lg bg-amber-500 text-black font-extrabold flex items-center justify-center text-xs">
+                    <span className="w-8 h-8 rounded-lg bg-violet-500 text-black font-extrabold flex items-center justify-center text-xs">
                       #{track.batchNumber}
                     </span>
                     <div>
@@ -148,7 +148,7 @@ export const TracklistView: React.FC<TracklistViewProps> = ({
                         {track.metadata.pianoType} — {track.metadata.genre}
                       </h4>
                       <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
-                        <span className="text-amber-400">{track.bpm} BPM</span>
+                        <span className="text-violet-400">{track.bpm} BPM</span>
                         <span>•</span>
                         <span>{track.modelUsed}</span>
                       </div>
@@ -209,7 +209,7 @@ export const TracklistView: React.FC<TracklistViewProps> = ({
 
                 {/* Expanded Details: Style Intensity & Full Metadata */}
                 {isExpanded && (
-                  <div className="pt-3 border-t border-[#222736] space-y-3 animate-in fade-in duration-200">
+                  <div className="pt-3 border-t border-[#342544] space-y-3 animate-in fade-in duration-200">
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
                       <div className="p-2 rounded bg-[#0f1118] border border-[#202534]">
                         <span className="text-slate-500 block text-[10px]">Mood:</span>

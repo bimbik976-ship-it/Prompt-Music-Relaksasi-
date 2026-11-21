@@ -75,7 +75,7 @@ Attempt: ${debugInfo.attempt ?? 1}${debugInfo.sanitizedResponseBody ? `\nServer 
         <p className="text-xs text-sky-200/90 mb-3">{debugInfo.errorMessage}</p>
 
         {expanded && (
-          <div className="rounded-lg bg-[#0d0f14] border border-[#222736] p-3 font-mono text-[11px] space-y-2">
+          <div className="rounded-lg bg-[#0d0f14] border border-[#342544] p-3 font-mono text-[11px] space-y-2">
             <div className="flex justify-between">
               <span className="text-slate-500">Status:</span>
               <span className="text-emerald-400 font-bold">ACCEPTED</span>
@@ -91,7 +91,7 @@ Attempt: ${debugInfo.attempt ?? 1}${debugInfo.sanitizedResponseBody ? `\nServer 
 
             {debugInfo.sharedMetadata && (
               <div className="pt-2 border-t border-[#1d2230] space-y-1">
-                <div className="text-[10px] uppercase font-bold text-amber-400">Shared metadata:</div>
+                <div className="text-[10px] uppercase font-bold text-violet-400">Shared metadata:</div>
                 <div className="flex justify-between text-[10px]">
                   <span className="text-slate-400">BPM:</span>
                   <span className="text-slate-200">{debugInfo.sharedMetadata.bpm ?? 'N/A'}</span>
@@ -108,7 +108,7 @@ Attempt: ${debugInfo.attempt ?? 1}${debugInfo.sanitizedResponseBody ? `\nServer 
             )}
 
             <div className="pt-2 border-t border-[#1d2230] space-y-1">
-              <div className="text-[10px] uppercase font-bold text-amber-400">Musical DNA:</div>
+              <div className="text-[10px] uppercase font-bold text-violet-400">Musical DNA:</div>
               <div className="text-[10px] text-slate-300">{debugInfo.musicalDna || 'Not proven identical.'}</div>
             </div>
 
@@ -160,11 +160,11 @@ Attempt: ${debugInfo.attempt ?? 1}${debugInfo.sanitizedResponseBody ? `\nServer 
       <p className="text-xs text-rose-200/90 mb-3">{debugInfo.errorMessage}</p>
 
       {expanded && (
-        <div className="rounded-lg bg-[#0d0f14] border border-[#222736] p-3 font-mono text-[11px] space-y-1.5">
+        <div className="rounded-lg bg-[#0d0f14] border border-[#342544] p-3 font-mono text-[11px] space-y-1.5">
           {debugInfo.endpoint && (
             <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5">
               <span className="text-slate-500">Endpoint:</span>
-              <span className="text-amber-400 break-all">{debugInfo.endpoint}</span>
+              <span className="text-violet-400 break-all">{debugInfo.endpoint}</span>
             </div>
           )}
           <div className="flex justify-between">
@@ -173,7 +173,7 @@ Attempt: ${debugInfo.attempt ?? 1}${debugInfo.sanitizedResponseBody ? `\nServer 
           </div>
           <div className="flex justify-between">
             <span className="text-slate-500">Model ID:</span>
-            <span className="text-amber-400 font-semibold">{debugInfo.gatewayModelId}</span>
+            <span className="text-violet-400 font-semibold">{debugInfo.gatewayModelId}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-slate-500">HTTP:</span>
@@ -189,7 +189,7 @@ Attempt: ${debugInfo.attempt ?? 1}${debugInfo.sanitizedResponseBody ? `\nServer 
           </div>
           {debugInfo.sanitizedResponseBody && (
             <div className="pt-2 border-t border-[#1d2230] space-y-1">
-              <div className="text-[10px] uppercase font-bold text-amber-400">Sanitized Server Response Body:</div>
+              <div className="text-[10px] uppercase font-bold text-violet-400">Sanitized Server Response Body:</div>
               <pre className="p-2 rounded bg-[#07080b] border border-[#1b1f2b] text-[10px] text-slate-300 font-mono overflow-x-auto whitespace-pre-wrap max-h-48 overflow-y-auto">
                 {debugInfo.sanitizedResponseBody}
               </pre>

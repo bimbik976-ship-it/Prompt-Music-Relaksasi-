@@ -143,7 +143,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
       {/* Top Banner & Header */}
       <div className="flex items-center justify-between gap-3 border-b border-[#242a3a] pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-violet-500/20 border border-violet-500/40 flex items-center justify-center text-violet-400 shrink-0">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
@@ -156,19 +156,19 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
           </div>
         </div>
 
-        {/* Create SEO model selector: same three chat models available for Style Prompt */}
+        {/* Create SEO model selector: all available chat models grouped by provider */}
         <div className="flex flex-col items-stretch gap-1.5 w-full sm:w-auto sm:min-w-[180px] shrink-0">
-          <label htmlFor="create-seo-model" className="text-[10px] text-slate-400 uppercase tracking-wider">CHAT MODEL SEO</label>
+          <label htmlFor="create-seo-model" className="text-[10px] text-slate-400 uppercase tracking-wider">CHAT MODEL CREATE SEO</label>
           <select
             id="create-seo-model"
             value={seoModelId}
             onChange={(e) => setSeoModelId(e.target.value as GatewayModelId)}
             disabled={isGenerating}
-            className="w-full sm:max-w-[240px] rounded-xl bg-[#101521] border border-[#3b465d] px-3 py-2.5 text-xs font-bold text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50 shadow-lg"
+            className="w-full sm:max-w-[240px] rounded-xl bg-[#1b1429] border border-[#3b465d] px-3 py-2.5 text-xs font-bold text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50 shadow-lg"
             aria-label="Pilih model Chat untuk Create SEO"
           >
             {MODEL_GROUPS.map((provider) => <optgroup key={provider} label={provider}>
-              {availableModels.filter((model) => model.provider === provider).map((model) => <option key={model.gatewayId} value={model.gatewayId} className="bg-[#141824] text-white">{model.uiName}</option>)}
+              {availableModels.filter((model) => model.provider === provider).map((model) => <option key={model.gatewayId} value={model.gatewayId} className="bg-[#241A35] text-white">{model.uiName}</option>)}
             </optgroup>)}
           </select>
         </div>
@@ -176,14 +176,14 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
 
       {/* No Key Warning */}
       {!hasActiveKey && (
-        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5 text-amber-300 text-xs">
+        <div className="p-4 rounded-xl bg-violet-500/10 border border-violet-500/30 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 text-violet-300 text-xs">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>Tidak ada Kunci KIE Aktif. Silakan aktifkan atau tambahkan kunci API terlebih dahulu.</span>
           </div>
           <button
             onClick={onSwitchToAPI}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500 text-black text-xs font-bold shrink-0 hover:bg-amber-400 transition"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-violet-500 text-black text-xs font-bold shrink-0 hover:bg-violet-400 transition"
           >
             <KeyRound className="w-3.5 h-3.5" />
             <span>BUKA API</span>
@@ -196,7 +196,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
         <form onSubmit={handleGenerate} className="space-y-4">
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-300 tracking-wider uppercase flex items-center justify-between">
-              <span className="text-amber-400 font-mono flex items-center gap-1.5">
+              <span className="text-violet-400 font-mono flex items-center gap-1.5">
                 <FileText className="w-3.5 h-3.5" />
                 INPUT YOUTUBE TITLE
               </span>
@@ -210,7 +210,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
               disabled={isGenerating}
               placeholder="Masukkan judul YouTube di sini (contoh: Relaxing Piano Music with Calming Rain for Deep Sleep, Stress Relief & Meditation)..."
               rows={3}
-              className="w-full px-4 py-3 rounded-xl bg-[#0a0c12] border border-[#222838] focus:border-amber-500/60 focus:ring-1 focus:ring-amber-500/40 text-slate-100 text-sm font-medium placeholder:text-slate-600 outline-none transition resize-none disabled:opacity-60"
+              className="w-full px-4 py-3 rounded-xl bg-[#171025] border border-[#222838] focus:border-violet-500/60 focus:ring-1 focus:ring-violet-500/40 text-slate-100 text-sm font-medium placeholder:text-slate-600 outline-none transition resize-none disabled:opacity-60"
             />
           </div>
 
@@ -223,8 +223,8 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
               disabled={isGenerating || !inputTitle.trim() || !hasActiveKey}
               className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-extrabold text-xs uppercase tracking-wider transition ${
                 isGenerating
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-wait animate-pulse'
-                  : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black shadow-lg shadow-amber-500/20 active:scale-[0.98]'
+                  ? 'bg-violet-500/20 text-violet-300 border border-violet-500/40 cursor-wait animate-pulse'
+                  : 'bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-400 hover:to-fuchsia-400 text-black shadow-lg shadow-amber-500/20 active:scale-[0.98]'
               } disabled:opacity-40 disabled:cursor-not-allowed`}
             >
               <Sparkles className={`w-4 h-4 ${isGenerating ? 'animate-spin' : ''}`} />
@@ -246,15 +246,15 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
 
       {/* Generated SEO Output Card: remains visible during loading, tab switch, re-render, and on retry error */}
       {savedResult && (
-        <div className="rounded-2xl bg-[#12151e] border border-amber-500/30 p-5 sm:p-6 shadow-2xl space-y-6 animate-in fade-in duration-300">
+        <div className="rounded-2xl bg-[#12151e] border border-violet-500/30 p-5 sm:p-6 shadow-2xl space-y-6 animate-in fade-in duration-300">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#242a3a] pb-4">
             <div className="flex items-center gap-2.5">
-              <div className={`w-2.5 h-2.5 rounded-full ${isGenerating ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'}`} />
+              <div className={`w-2.5 h-2.5 rounded-full ${isGenerating ? 'bg-violet-400 animate-ping' : 'bg-emerald-400'}`} />
               <h3 className="font-extrabold text-white text-base tracking-wide uppercase">
                 HASIL OPTIMASI JUDUL & PAKET SEO
               </h3>
               {isGenerating && (
-                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-[10px] font-bold text-amber-300 animate-pulse">
+                <span className="px-2 py-0.5 rounded-full bg-violet-500/20 border border-violet-500/40 text-[10px] font-bold text-violet-300 animate-pulse">
                   Memproses judul baru...
                 </span>
               )}
@@ -265,7 +265,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
               className={`flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition border ${
                 copiedAll
                   ? 'bg-emerald-600 text-white border-emerald-500'
-                  : 'bg-[#1b202c] hover:bg-[#252c3d] text-amber-400 border-amber-500/30 hover:border-amber-500/60'
+                  : 'bg-[#1b202c] hover:bg-[#252c3d] text-violet-400 border-violet-500/30 hover:border-violet-500/60'
               }`}
             >
               {copiedAll ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -292,7 +292,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
                 <span>{copiedTitle ? 'COPIED TITLE' : 'COPY TITLE'}</span>
               </button>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#0a0c12] border border-[#222838] text-white font-medium text-sm sm:text-base leading-snug select-all">
+            <div className="p-3.5 rounded-xl bg-[#171025] border border-[#222838] text-white font-medium text-sm sm:text-base leading-snug select-all">
               {savedResult.title}
             </div>
           </div>
@@ -301,7 +301,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
           <div className="space-y-2">
             <div className="flex items-center justify-between gap-2">
               <label className="text-xs font-bold text-slate-300 tracking-wider uppercase">
-                <span className="text-amber-400 font-mono">SEO DESCRIPTION</span>
+                <span className="text-violet-400 font-mono">SEO DESCRIPTION</span>
                 <span className="text-[10px] text-slate-400 font-normal ml-2">
                   ({descriptionWordCount} kata • maksimal 500 kata • berdasarkan judul teroptimasi)
                 </span>
@@ -311,14 +311,14 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                   copiedDescription
                     ? 'bg-emerald-600 text-white'
-                    : 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40'
+                    : 'bg-violet-500/20 hover:bg-violet-500/30 text-violet-300 border border-violet-500/40'
                 }`}
               >
                 {copiedDescription ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedDescription ? 'COPIED DESCRIPTION' : 'COPY DESCRIPTION'}</span>
               </button>
             </div>
-            <div className="p-4 rounded-xl bg-[#0a0c12] border border-[#222838] text-slate-200 text-xs sm:text-sm leading-relaxed whitespace-pre-line select-all max-h-96 overflow-y-auto pr-2">
+            <div className="p-4 rounded-xl bg-[#171025] border border-[#222838] text-slate-200 text-xs sm:text-sm leading-relaxed whitespace-pre-line select-all max-h-96 overflow-y-auto pr-2">
               {savedResult.description}
             </div>
           </div>
@@ -344,7 +344,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
                 <span>{copiedHashtags ? 'COPIED HASHTAGS' : 'COPY HASHTAGS'}</span>
               </button>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#0a0c12] border border-[#222838] flex flex-wrap gap-2 select-all">
+            <div className="p-3.5 rounded-xl bg-[#171025] border border-[#222838] flex flex-wrap gap-2 select-all">
               {savedResult.hashtags.map((h, i) => (
                 <span
                   key={`${h}-${i}`}
@@ -377,7 +377,7 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
                 <span>{copiedTags ? 'COPIED TAGS' : 'COPY TAGS'}</span>
               </button>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#0a0c12] border border-[#222838] text-xs font-mono text-slate-300 leading-relaxed select-all">
+            <div className="p-3.5 rounded-xl bg-[#171025] border border-[#222838] text-xs font-mono text-slate-300 leading-relaxed select-all">
               {savedResult.tags.join(', ')}
             </div>
           </div>

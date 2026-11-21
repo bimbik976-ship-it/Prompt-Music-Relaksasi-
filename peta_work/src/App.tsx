@@ -405,10 +405,10 @@ export default function App() {
   const activeKeysCount = apiKeys.filter((k) => k.isActive).length;
 
   return (
-    <div className="min-h-screen bg-[#0d0f12] text-slate-100 flex flex-col selection:bg-amber-500 selection:text-black">
+    <div className="min-h-screen bg-[#171025] text-slate-100 flex flex-col selection:bg-violet-500 selection:text-black">
       {/* Offline banner if disconnected */}
       {!isOnline && (
-        <div className="bg-amber-600 text-black px-4 py-1.5 text-xs font-bold text-center">
+        <div className="bg-violet-600 text-black px-4 py-1.5 text-xs font-bold text-center">
           Mode Offline — Koneksi internet terputus. KIE Gateway memerlukan koneksi aktif.
         </div>
       )}

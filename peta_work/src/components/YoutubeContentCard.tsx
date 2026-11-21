@@ -77,8 +77,8 @@ export const YoutubeContentCard: React.FC<YoutubeContentCardProps> = ({
           disabled={isGenerating}
           className={`flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition border ${
             isGenerating
-              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 cursor-wait animate-pulse'
-              : 'bg-[#1b202c] hover:bg-[#252c3d] text-amber-400 border-amber-500/30 hover:border-amber-500/60 shadow-sm active:scale-[0.98]'
+              ? 'bg-violet-500/20 text-violet-300 border-violet-500/40 cursor-wait animate-pulse'
+              : 'bg-[#1b202c] hover:bg-[#252c3d] text-violet-400 border-violet-500/30 hover:border-violet-500/60 shadow-sm active:scale-[0.98]'
           }`}
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isGenerating ? 'animate-spin' : ''}`} />
@@ -109,7 +109,7 @@ export const YoutubeContentCard: React.FC<YoutubeContentCardProps> = ({
 
       {/* Status banner while generating */}
       {isGenerating && statusMessage && (
-        <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-500/30 flex items-center gap-2 text-xs text-amber-300 font-medium">
+        <div className="p-3 rounded-xl bg-violet-950/30 border border-violet-500/30 flex items-center gap-2 text-xs text-violet-300 font-medium">
           <RefreshCw className="w-4 h-4 animate-spin shrink-0" />
           <span>{statusMessage}</span>
         </div>
@@ -136,7 +136,7 @@ export const YoutubeContentCard: React.FC<YoutubeContentCardProps> = ({
             <span>{copiedTitle ? 'Tersalin!' : 'COPY TITLE'}</span>
           </button>
         </div>
-        <div className="p-3.5 rounded-xl bg-[#0a0c12] border border-[#222838] text-white font-medium text-sm sm:text-base leading-snug select-all">
+        <div className="p-3.5 rounded-xl bg-[#171025] border border-[#222838] text-white font-medium text-sm sm:text-base leading-snug select-all">
           {content.title}
         </div>
       </div>
@@ -145,7 +145,7 @@ export const YoutubeContentCard: React.FC<YoutubeContentCardProps> = ({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="text-xs font-bold text-slate-300 tracking-wider uppercase flex items-center gap-1.5">
-            <span className="text-amber-400 font-mono">SEO DESCRIPTION</span>
+            <span className="text-violet-400 font-mono">SEO DESCRIPTION</span>
             <span className="text-[10px] text-slate-400 font-normal">
               ({descriptionWordCount} kata • {paragraphCount} paragraf • Target sekitar 600–750 kata)
             </span>
@@ -155,14 +155,14 @@ export const YoutubeContentCard: React.FC<YoutubeContentCardProps> = ({
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
               copiedDescription
                 ? 'bg-emerald-600 text-white'
-                : 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40'
+                : 'bg-violet-500/20 hover:bg-violet-500/30 text-violet-300 border border-violet-500/40'
             }`}
           >
             {copiedDescription ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copiedDescription ? 'Tersalin!' : 'COPY DESCRIPTION'}</span>
           </button>
         </div>
-        <div className="p-4 rounded-xl bg-[#0a0c12] border border-[#222838] text-slate-200 text-xs sm:text-sm leading-relaxed whitespace-pre-line select-all max-h-80 overflow-y-auto pr-2">
+        <div className="p-4 rounded-xl bg-[#171025] border border-[#222838] text-slate-200 text-xs sm:text-sm leading-relaxed whitespace-pre-line select-all max-h-80 overflow-y-auto pr-2">
           {content.description}
         </div>
       </div>
@@ -189,7 +189,7 @@ export const YoutubeContentCard: React.FC<YoutubeContentCardProps> = ({
             <span>{copiedHashtags ? 'Tersalin!' : 'COPY HASHTAGS'}</span>
           </button>
         </div>
-        <div className="p-3 rounded-xl bg-[#0a0c12] border border-[#222838] flex flex-wrap gap-2 select-all">
+        <div className="p-3 rounded-xl bg-[#171025] border border-[#222838] flex flex-wrap gap-2 select-all">
           {content.hashtags.map((ht, idx) => (
             <span
               key={idx}
@@ -223,7 +223,7 @@ export const YoutubeContentCard: React.FC<YoutubeContentCardProps> = ({
             <span>{copiedTags ? 'Tersalin!' : 'COPY TAGS'}</span>
           </button>
         </div>
-        <div className="p-3.5 rounded-xl bg-[#0a0c12] border border-[#222838] text-xs font-mono text-slate-300 leading-relaxed select-all">
+        <div className="p-3.5 rounded-xl bg-[#171025] border border-[#222838] text-xs font-mono text-slate-300 leading-relaxed select-all">
           {tagsCommaSeparated}
         </div>
       </div>

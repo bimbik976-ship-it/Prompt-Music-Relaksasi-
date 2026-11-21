@@ -23,11 +23,11 @@ export const Header: React.FC<HeaderProps> = ({
   const isApiReady = activeKeysCount > 0;
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[#222634] bg-[#0d0f12]/95 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-[#342544] bg-[#171025]/95 backdrop-blur-md">
       <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
         {/* Brand identity */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)]">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.18)]">
             <Music className="w-5 h-5" />
           </div>
           <div>
@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
               <h1 className="font-extrabold text-base sm:text-lg tracking-tight text-white">
                 PETA PIANO AI
               </h1>
-              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/25">
+              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-violet-500/10 text-violet-400 border border-violet-500/25">
                 AI V1.0
               </span>
             </div>
@@ -67,8 +67,8 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Batch Progress Mini-badge */}
-          <div className="hidden xs:flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono bg-[#181b24] border border-[#2b3040] text-slate-300">
-            <span className="text-amber-400 font-bold">{Math.min(completedCount, BATCH_SIZE)}</span>
+          <div className="hidden xs:flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono bg-[#241A35] border border-[#403052] text-slate-300">
+            <span className="text-violet-400 font-bold">{Math.min(completedCount, BATCH_SIZE)}</span>
             <span className="text-slate-500">/{BATCH_SIZE}</span>
           </div>
 
@@ -76,9 +76,9 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenQC}
             title="Quality Control & System Diagnostics"
-            className="p-1.5 rounded-lg bg-[#181b24] border border-[#2b3040] text-slate-300 hover:text-amber-400 hover:border-amber-500/30 transition text-xs flex items-center gap-1"
+            className="p-1.5 rounded-lg bg-[#241A35] border border-[#403052] text-slate-300 hover:text-violet-400 hover:border-violet-500/30 transition text-xs flex items-center gap-1"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <Sparkles className="w-3.5 h-3.5 text-violet-400" />
             <span className="hidden sm:inline text-[11px]">QC</span>
           </button>
 
@@ -86,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({
           {isInstallable && (
             <button
               onClick={install}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-black text-xs font-bold transition shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-violet-500 hover:bg-violet-400 text-black text-xs font-bold transition shadow-[0_0_15px_rgba(139,92,246,0.25)]"
             >
               <Download className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Install App</span>
@@ -96,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({
           {isIOS && !isInstalled && (
             <button
               onClick={() => setShowIOSPrompt(true)}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg border border-[#2b3040] text-[11px] text-slate-400 hover:text-slate-200"
+              className="flex items-center gap-1 px-2 py-1 rounded-lg border border-[#403052] text-[11px] text-slate-400 hover:text-slate-200"
             >
               <Smartphone className="w-3 h-3" />
               <span>iOS App</span>
@@ -108,9 +108,9 @@ export const Header: React.FC<HeaderProps> = ({
       {/* iOS Install Instructions Modal */}
       {showIOSPrompt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-sm rounded-2xl bg-[#161922] border border-[#2b3040] p-5 shadow-2xl text-slate-200">
+          <div className="w-full max-w-sm rounded-2xl bg-[#2b2040] border border-[#403052] p-5 shadow-2xl text-slate-200">
             <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
-              <Smartphone className="w-5 h-5 text-amber-400" />
+              <Smartphone className="w-5 h-5 text-violet-400" />
               Pasang di iPhone / iPad
             </h3>
             <p className="text-xs text-slate-300 mb-3 leading-relaxed">
@@ -120,7 +120,7 @@ export const Header: React.FC<HeaderProps> = ({
             </p>
             <button
               onClick={() => setShowIOSPrompt(false)}
-              className="w-full py-2 rounded-xl bg-amber-500 text-black font-semibold text-xs hover:bg-amber-400 transition"
+              className="w-full py-2 rounded-xl bg-violet-500 text-black font-semibold text-xs hover:bg-violet-400 transition"
             >
               Tutup
             </button>

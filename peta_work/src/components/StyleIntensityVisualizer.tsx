@@ -6,7 +6,7 @@ interface StyleIntensityVisualizerProps {
 }
 
 const INTENSITY_ITEMS: { key: keyof StyleIntensity; label: string; color: string }[] = [
-  { key: 'ambient', label: 'Ambient', color: 'bg-amber-400' },
+  { key: 'ambient', label: 'Ambient', color: 'bg-violet-400' },
   { key: 'minimalist', label: 'Minimalist', color: 'bg-orange-400' },
   { key: 'meditative', label: 'Meditative', color: 'bg-yellow-400' },
   { key: 'sleepFriendly', label: 'Sleep-Friendly', color: 'bg-blue-400' },
@@ -24,11 +24,11 @@ export const StyleIntensityVisualizer: React.FC<StyleIntensityVisualizerProps> =
           return (
             <div
               key={key}
-              className="p-2 rounded-lg bg-[#141720] border border-[#232734] flex flex-col justify-between"
+              className="p-2 rounded-lg bg-[#241A35] border border-[#232734] flex flex-col justify-between"
             >
               <div className="flex items-center justify-between text-xs mb-1.5">
                 <span className="text-slate-300 font-medium">{label}</span>
-                <span className="font-mono text-amber-400 font-bold">{value}%</span>
+                <span className="font-mono text-violet-400 font-bold">{value}%</span>
               </div>
               <div className="w-full h-2 bg-[#1d222e] rounded-full overflow-hidden">
                 <div

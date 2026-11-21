@@ -199,7 +199,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
     let displayStatus: ApiKeyStatus = key.status;
     if (displayStatus === 'CHECKING') {
       return (
-        <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-full bg-amber-950/50 text-amber-300 border border-amber-500/40">
+        <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-full bg-violet-950/50 text-violet-300 border border-violet-500/40">
           <RotateCw className="w-2.5 h-2.5 animate-spin" />
           CHECKING
         </span>
@@ -217,7 +217,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
 
     if (displayStatus === 'RATE LIMITED' || displayStatus === 'rate_limited') {
       return (
-        <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-full bg-amber-950/50 text-amber-400 border border-amber-500/30">
+        <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded-full bg-violet-950/50 text-violet-400 border border-violet-500/30">
           <AlertTriangle className="w-2.5 h-2.5" />
           RATE LIMITED
         </span>
@@ -271,19 +271,19 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       {/* Toast / Notification Banner */}
       {toastMessage && (
         <div className="fixed top-20 right-4 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#171b26] border border-amber-500/40 text-amber-300 shadow-xl text-xs font-semibold">
-            <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0" />
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#171b26] border border-violet-500/40 text-violet-300 shadow-xl text-xs font-semibold">
+            <CheckCircle2 className="w-4 h-4 text-violet-400 flex-shrink-0" />
             <span>{toastMessage}</span>
           </div>
         </div>
       )}
 
       {/* Security Warning Notice */}
-      <div className="rounded-2xl border border-amber-500/30 bg-amber-950/20 p-4 sm:p-5 text-amber-200 flex items-start gap-3.5">
-        <ShieldAlert className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+      <div className="rounded-2xl border border-violet-500/30 bg-violet-950/20 p-4 sm:p-5 text-violet-200 flex items-start gap-3.5">
+        <ShieldAlert className="w-5 h-5 text-violet-400 flex-shrink-0 mt-0.5" />
         <div className="space-y-1 text-xs">
           <h4 className="font-bold text-white text-sm">Security & Secret Management Protocol</h4>
-          <p className="text-amber-200/90 leading-relaxed">
+          <p className="text-violet-200/90 leading-relaxed">
             API key disimpan secara lokal pada browser client (localStorage) dan dikirimkan secara rahasia melalui secure backend proxy ke KIE Gateway.
             Kunci API Anda selalu disamarkan secara default (<span className="font-mono text-white">sk-••••••••••1234</span>) dan <strong>tidak pernah</strong> dimasukkan ke dalam prompt, logs publik, error message, maupun Tracklist.
           </p>
@@ -341,7 +341,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                     </span>
                   </div>
                   {keys.length > 0 && (
-                    <div className="text-xs text-amber-400 font-mono">
+                    <div className="text-xs text-violet-400 font-mono">
                       Estimasi lokal: {summary.totalEstimatedRemaining} kredit tersisa (berdasarkan awal 80)
                     </div>
                   )}
@@ -351,7 +351,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
 
             <p className="text-xs text-slate-400 mt-2">
               Current Key:{' '}
-              <strong className="text-amber-400 font-mono">
+              <strong className="text-violet-400 font-mono">
                 {summary.currentActiveKeyLabel !== 'None' ? summary.currentActiveKeyLabel : 'Tidak ada key aktif'}
               </strong>{' '}
               • Mode: <strong className="text-white">{routingMode}</strong>
@@ -365,7 +365,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
               disabled={isCheckingAll || keys.length === 0}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#202534] hover:bg-[#2c3347] border border-[#343b52] text-xs font-semibold text-slate-200 transition disabled:opacity-50"
             >
-              <RotateCw className={`w-3.5 h-3.5 ${isCheckingAll ? 'animate-spin text-amber-400' : 'text-amber-400'}`} />
+              <RotateCw className={`w-3.5 h-3.5 ${isCheckingAll ? 'animate-spin text-violet-400' : 'text-violet-400'}`} />
               <span>{isCheckingAll ? 'Memeriksa...' : 'Cek Saldo'}</span>
             </button>
 
@@ -373,7 +373,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
               onClick={onOpenQC}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#202534] hover:bg-[#2c3347] border border-[#343b52] text-xs font-semibold text-slate-200 transition"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
               <span>Jalankan QC</span>
             </button>
           </div>
@@ -381,9 +381,9 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       </div>
 
       {/* Section 5: API Key Settings (Pengaturan API Key) */}
-      <div className="rounded-2xl bg-[#141720] border border-[#252a3a] p-5">
+      <div className="rounded-2xl bg-[#241A35] border border-[#403052] p-5">
         <h3 className="font-bold text-sm text-white mb-4 flex items-center gap-2">
-          <KeyRound className="w-4 h-4 text-amber-400" />
+          <KeyRound className="w-4 h-4 text-violet-400" />
           <span>Pengaturan API Key</span>
         </h3>
 
@@ -394,7 +394,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
               <span className="block text-[11px] text-slate-400">Gateway Provider</span>
               <span className="font-bold text-sm text-white">KIE.AI</span>
             </div>
-            <span className="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold font-mono">
+            <span className="px-2.5 py-1 rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/30 text-xs font-bold font-mono">
               OFFICIAL
             </span>
           </div>
@@ -410,7 +410,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                 onClick={() => onSetRoutingMode('AUTO')}
                 className={`px-3 py-1 rounded-md text-xs font-bold transition ${
                   routingMode === 'AUTO'
-                    ? 'bg-amber-500 text-black shadow-[0_0_10px_rgba(245,158,11,0.3)]'
+                    ? 'bg-violet-500 text-black shadow-[0_0_10px_rgba(139,92,246,0.25)]'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -420,7 +420,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                 onClick={() => onSetRoutingMode('MANUAL')}
                 className={`px-3 py-1 rounded-md text-xs font-bold transition ${
                   routingMode === 'MANUAL'
-                    ? 'bg-amber-500 text-black shadow-[0_0_10px_rgba(245,158,11,0.3)]'
+                    ? 'bg-violet-500 text-black shadow-[0_0_10px_rgba(139,92,246,0.25)]'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -432,11 +432,11 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
 
         {/* Section 20: MANUAL Routing Key Selector */}
         {routingMode === 'MANUAL' && (
-          <div className="mt-4 p-4 rounded-xl bg-[#0f1118] border border-amber-500/30 space-y-2 animate-in fade-in duration-150">
+          <div className="mt-4 p-4 rounded-xl bg-[#0f1118] border border-violet-500/30 space-y-2 animate-in fade-in duration-150">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                  <span className="w-2 h-2 rounded-full bg-violet-400" />
                   Pilih Kunci Utama (MANUAL Routing):
                 </h4>
                 <p className="text-[11px] text-slate-400">
@@ -449,7 +449,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                   <select
                     value={manualSelectedKeyId || keys[0]?.id}
                     onChange={(e) => onSelectManualKey(e.target.value)}
-                    className="w-full sm:w-auto bg-[#181c28] border border-[#2c3347] text-amber-300 font-mono text-xs rounded-xl px-3 py-2 pr-8 focus:outline-none focus:border-amber-500 transition appearance-none cursor-pointer"
+                    className="w-full sm:w-auto bg-[#181c28] border border-[#2c3347] text-violet-300 font-mono text-xs rounded-xl px-3 py-2 pr-8 focus:outline-none focus:border-violet-500 transition appearance-none cursor-pointer"
                   >
                     {keys.map((k, idx) => (
                       <option key={k.id} value={k.id}>
@@ -468,12 +468,12 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       </div>
 
       {/* Section 6 & 27: API Key Pool & Controls */}
-      <div className="rounded-2xl bg-[#141720] border border-[#252a3a] p-5 space-y-4">
+      <div className="rounded-2xl bg-[#241A35] border border-[#403052] p-5 space-y-4">
         {/* Pool Header & Action Buttons */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#222736] pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#342544] pb-4">
           <div>
             <div className="flex items-center gap-2">
-              <KeyRound className="w-4 h-4 text-amber-400" />
+              <KeyRound className="w-4 h-4 text-violet-400" />
               <h3 className="font-bold text-sm text-white">
                 Daftar key tersimpan ({keys.length} key)
               </h3>
@@ -495,7 +495,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
             >
               {showKeys ? (
                 <>
-                  <EyeOff className="w-3.5 h-3.5 text-amber-400" />
+                  <EyeOff className="w-3.5 h-3.5 text-violet-400" />
                   <span>Sembunyikan</span>
                 </>
               ) : (
@@ -512,7 +512,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
               disabled={isCheckingAll || keys.length === 0}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#181b26] hover:bg-[#232738] border border-[#2b3144] text-xs font-semibold text-slate-200 transition disabled:opacity-50"
             >
-              <RotateCw className={`w-3.5 h-3.5 ${isCheckingAll ? 'animate-spin text-amber-400' : 'text-amber-400'}`} />
+              <RotateCw className={`w-3.5 h-3.5 ${isCheckingAll ? 'animate-spin text-violet-400' : 'text-violet-400'}`} />
               <span>{isCheckingAll ? 'Memeriksa...' : 'Cek saldo'}</span>
             </button>
 
@@ -541,7 +541,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
         {/* Section 28: EMPTY STATE */}
         {keys.length === 0 ? (
           <div className="p-8 rounded-xl bg-[#0e1017] border border-[#202534] text-center space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 mx-auto">
+            <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400 mx-auto">
               <KeyRound className="w-6 h-6" />
             </div>
             <div>
@@ -555,7 +555,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                 const el = document.getElementById('multi-key-textarea');
                 el?.focus();
               }}
-              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs shadow-[0_0_15px_rgba(245,158,11,0.25)] transition inline-flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-violet-500 hover:bg-violet-400 text-black font-bold text-xs shadow-[0_0_15px_rgba(245,158,11,0.25)] transition inline-flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
               <span>+ Tambahkan API Key</span>
@@ -575,7 +575,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                 >
                   <div className="space-y-1.5 flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-xs font-extrabold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">
+                      <span className="font-mono text-xs font-extrabold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-1.5 py-0.5 rounded">
                         #{index + 1}
                       </span>
                       <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-bold border border-slate-700">
@@ -588,7 +588,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                     </div>
 
                     {/* Masked / Actual Key Display (Section 7) */}
-                    <div className="font-mono text-xs text-amber-300/90 font-semibold tracking-wider select-all break-all">
+                    <div className="font-mono text-xs text-violet-300/90 font-semibold tracking-wider select-all break-all">
                       {showKeys ? key.rawKey : key.maskedKey}
                     </div>
 
@@ -602,7 +602,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                         <div className="flex flex-wrap items-center gap-1 text-slate-400">
                           <span>
                             {key.startingBalance ?? 80} starting • {key.usedTokens ?? 0} used •{' '}
-                            <strong className="text-amber-400">
+                            <strong className="text-violet-400">
                               {key.estimatedRemaining ?? 80} sisa
                             </strong>{' '}
                             <span className="text-[10px] text-slate-400">(Estimasi Lokal)</span>
@@ -652,7 +652,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                       className="px-2.5 py-1.5 rounded-lg bg-[#1a1e2a] hover:bg-[#252b3b] border border-[#2b3144] text-slate-300 text-xs flex items-center gap-1 transition disabled:opacity-50"
                       title="Uji konektivitas key ini"
                     >
-                      <RotateCw className={`w-3 h-3 ${isTesting ? 'animate-spin text-amber-400' : 'text-slate-400'}`} />
+                      <RotateCw className={`w-3 h-3 ${isTesting ? 'animate-spin text-violet-400' : 'text-slate-400'}`} />
                       <span>{isTesting ? 'Menguji...' : 'Uji'}</span>
                     </button>
 
@@ -688,7 +688,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
         {keys.length > 0 && routingMode === 'AUTO' && (
           <div className="rounded-xl bg-[#0c0e14] border border-[#202534] p-4 space-y-2">
             <div className="flex items-center gap-2">
-              <Layers className="w-3.5 h-3.5 text-amber-400" />
+              <Layers className="w-3.5 h-3.5 text-violet-400" />
               <h4 className="text-xs font-bold text-white uppercase tracking-wider">
                 AUTO FALLBACK CHAIN
               </h4>
@@ -711,7 +711,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
                     <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
                       {fallbackChain.slice(1).map((k) => (
                         <div key={k.id} className="flex items-center gap-1 text-[11px] text-slate-300 font-mono bg-[#161a26] px-2 py-0.5 rounded border border-[#252b3d]">
-                          <ArrowRight className="w-3 h-3 text-amber-400" />
+                          <ArrowRight className="w-3 h-3 text-violet-400" />
                           <span>{k.name}</span>
                         </div>
                       ))}
@@ -732,9 +732,9 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       </div>
 
       {/* Section 10: ADD MULTIPLE API KEYS Form */}
-      <div className="rounded-2xl bg-[#141720] border border-[#252a3a] p-5 space-y-3">
+      <div className="rounded-2xl bg-[#241A35] border border-[#403052] p-5 space-y-3">
         <h3 className="font-bold text-sm text-white flex items-center gap-2">
-          <Plus className="w-4 h-4 text-amber-400" />
+          <Plus className="w-4 h-4 text-violet-400" />
           <span>Tambah API Key KIE.AI</span>
         </h3>
 
@@ -751,7 +751,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
               placeholder={`sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\nsk-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy\nsk-zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz`}
               value={multiKeyInput}
               onChange={(e) => setMultiKeyInput(e.target.value)}
-              className="w-full bg-[#0d0f14] border border-[#262c3d] rounded-xl p-3 text-xs text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-amber-500 transition resize-y"
+              className="w-full bg-[#0d0f14] border border-[#262c3d] rounded-xl p-3 text-xs text-white font-mono placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition resize-y"
             />
           </div>
 
@@ -761,7 +761,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
             </span>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs shadow-[0_0_15px_rgba(245,158,11,0.25)] transition flex items-center gap-1.5"
+              className="px-5 py-2.5 rounded-xl bg-violet-500 hover:bg-violet-400 text-black font-bold text-xs shadow-[0_0_15px_rgba(245,158,11,0.25)] transition flex items-center gap-1.5"
             >
               <Plus className="w-4 h-4" />
               <span>+ Tambahkan API Key</span>
@@ -771,15 +771,15 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       </div>
 
       {/* Existing Centralized Gateway Models Specifications (Preserved) */}
-      <div className="rounded-2xl bg-[#141720] border border-[#252a3a] p-5">
+      <div className="rounded-2xl bg-[#241A35] border border-[#403052] p-5">
         <h3 className="font-bold text-sm text-white mb-3 flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-amber-400" />
+          <Cpu className="w-4 h-4 text-violet-400" />
           <span>Spesifikasi Gateway Model Resmi (KIE.AI)</span>
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-[#222736] text-slate-400 font-mono text-[11px]">
+              <tr className="border-b border-[#342544] text-slate-400 font-mono text-[11px]">
                 <th className="py-2 px-3">Nama Model UI</th>
                 <th className="py-2 px-3">Gateway Model ID</th>
                 <th className="py-2 px-3">Peran Musikal</th>
@@ -790,7 +790,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
               {Object.entries(MODEL_CONFIG).map(([id, cfg]) => (
                 <tr key={id} className="hover:bg-[#181c27]">
                   <td className="py-2.5 px-3 font-bold text-white">{cfg.uiName}</td>
-                  <td className="py-2.5 px-3 font-mono text-amber-400 font-semibold">{cfg.gatewayId}</td>
+                  <td className="py-2.5 px-3 font-mono text-violet-400 font-semibold">{cfg.gatewayId}</td>
                   <td className="py-2.5 px-3 text-slate-300">{cfg.description}</td>
                   <td className="py-2.5 px-3">
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/50 text-emerald-400 border border-emerald-500/30">
@@ -807,7 +807,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       {/* Confirmation Modal: Delete Single Key (Section 9) */}
       {keyToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-150">
-          <div className="w-full max-w-sm rounded-2xl bg-[#141720] border border-[#2c3142] p-6 shadow-2xl text-slate-100 space-y-4">
+          <div className="w-full max-w-sm rounded-2xl bg-[#241A35] border border-[#2c3142] p-6 shadow-2xl text-slate-100 space-y-4">
             <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mx-auto">
               <Trash2 className="w-6 h-6" />
             </div>
@@ -845,7 +845,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       {/* Confirmation Modal: Delete All Keys (Section 9) */}
       {showDeleteAllModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-150">
-          <div className="w-full max-w-sm rounded-2xl bg-[#141720] border border-[#2c3142] p-6 shadow-2xl text-slate-100 space-y-4">
+          <div className="w-full max-w-sm rounded-2xl bg-[#241A35] border border-[#2c3142] p-6 shadow-2xl text-slate-100 space-y-4">
             <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mx-auto">
               <Trash2 className="w-6 h-6" />
             </div>
@@ -880,8 +880,8 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
       {/* Confirmation Modal: Copy All Keys (Section 8) */}
       {showCopyAllModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-150">
-          <div className="w-full max-w-sm rounded-2xl bg-[#141720] border border-[#2c3142] p-6 shadow-2xl text-slate-100 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mx-auto">
+          <div className="w-full max-w-sm rounded-2xl bg-[#241A35] border border-[#2c3142] p-6 shadow-2xl text-slate-100 space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/30 flex items-center justify-center text-violet-400 mx-auto">
               <Copy className="w-6 h-6" />
             </div>
             <div className="text-center space-y-1.5">
@@ -899,7 +899,7 @@ export const ApiManagerView: React.FC<ApiManagerViewProps> = ({
               </button>
               <button
                 onClick={handleConfirmCopyAll}
-                className="py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs shadow-[0_0_15px_rgba(245,158,11,0.25)] transition"
+                className="py-2.5 px-4 rounded-xl bg-violet-500 hover:bg-violet-400 text-black font-bold text-xs shadow-[0_0_15px_rgba(245,158,11,0.25)] transition"
               >
                 Ya, Salin Semua
               </button>

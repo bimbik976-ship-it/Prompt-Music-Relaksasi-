@@ -33,9 +33,9 @@ export const QCModal: React.FC<QCModalProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
       <div className="w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl bg-[#13161f] border border-[#2b3144] shadow-2xl overflow-hidden text-slate-100">
         {/* Header */}
-        <div className="p-4 border-b border-[#222736] flex items-center justify-between bg-[#0e1017]">
+        <div className="p-4 border-b border-[#342544] flex items-center justify-between bg-[#0e1017]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
+            <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/30 text-violet-400">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
@@ -49,9 +49,9 @@ export const QCModal: React.FC<QCModalProps> = ({ isOpen, onClose }) => {
             <button
               onClick={executeTests}
               disabled={isRunning}
-              className="p-1.5 rounded-lg bg-[#1a1e29] hover:bg-[#252b3b] text-slate-300 text-xs flex items-center gap-1 border border-[#2b3040] transition disabled:opacity-50"
+              className="p-1.5 rounded-lg bg-[#1a1e29] hover:bg-[#252b3b] text-slate-300 text-xs flex items-center gap-1 border border-[#403052] transition disabled:opacity-50"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isRunning ? 'animate-spin text-amber-400' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${isRunning ? 'animate-spin text-violet-400' : ''}`} />
               <span className="text-[11px] hidden sm:inline">Ulangi Tes</span>
             </button>
             <button
@@ -64,15 +64,15 @@ export const QCModal: React.FC<QCModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Score Summary */}
-        <div className="px-5 py-3 bg-[#171a24] border-b border-[#222736] flex items-center justify-between text-xs">
+        <div className="px-5 py-3 bg-[#171a24] border-b border-[#342544] flex items-center justify-between text-xs">
           <span className="text-slate-300">
-            Hasil Evaluasi: <strong className="text-amber-400">{passedCount} / {tests.length}</strong> Tes Lulus
+            Hasil Evaluasi: <strong className="text-violet-400">{passedCount} / {tests.length}</strong> Tes Lulus
           </span>
           <span
             className={`px-2 py-0.5 rounded-full font-bold text-[10px] ${
               passedCount === tests.length
                 ? 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-400'
-                : 'bg-amber-950/60 border border-amber-500/40 text-amber-400'
+                : 'bg-violet-950/60 border border-violet-500/40 text-violet-400'
             }`}
           >
             {passedCount === tests.length ? 'ALL SYSTEMS COMPLIANT' : 'CHECK PENDING'}
@@ -111,7 +111,7 @@ export const QCModal: React.FC<QCModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="p-3 border-t border-[#222736] bg-[#0e1017] flex justify-end">
+        <div className="p-3 border-t border-[#342544] bg-[#0e1017] flex justify-end">
           <button
             onClick={onClose}
             className="px-4 py-1.5 rounded-xl bg-[#1d222e] hover:bg-[#282e3e] text-xs font-semibold text-slate-200 transition"
