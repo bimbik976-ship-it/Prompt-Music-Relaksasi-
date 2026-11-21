@@ -62,7 +62,7 @@ export default function App() {
   const [selectedModelId, setSelectedModelId] = useState<GatewayModelId>(() => {
     try {
       const stored = localStorage.getItem(MODEL_STORAGE_KEY);
-      if (stored === 'gpt-6-astra' || stored === 'gpt-5-6-luna' || stored === 'gpt-5-5') {
+      if (typeof stored === 'string' && stored.trim()) {
         return stored;
       }
     } catch {}

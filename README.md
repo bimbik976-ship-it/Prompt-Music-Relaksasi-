@@ -39,3 +39,13 @@ The project includes Vercel Serverless Functions under `api/kie/` so production 
 
 
 KIE SEO JSON FIX V3: the SEO Responses request now uses strict text.format JSON Schema as the primary response contract, with structured/no-reasoning/plain/streaming fallbacks. This specifically addresses HTTP 200 responses whose model text previously failed JSON parsing.
+
+## Chat model providers update
+
+PETA and CREATE SEO now share a provider-aware chat model selector. OpenAI and Claude choices are loaded from KIE's authenticated model-list endpoints; Gemini choices use the documented KIE chat catalog. The app keeps its existing GPT aliases as compatibility choices.
+
+The same-origin `/api/kie/responses` proxy accepts the app's existing Responses-shaped request and translates it server-side for Claude Messages and Gemini chat endpoints. OpenAI requests continue through the existing KIE Codex Responses endpoint. `/api/kie/models` provides the model catalog used by both selectors.
+
+Provider selector styling: OpenAI / Electric Blue, Gemini / Violet, Claude / Emerald, on the existing Graphite interface.
+
+Only chat model selection and the provider request adapter are changed. Existing batch generation, prompt validation, anti-repetition, tracklist, API key/token manager, SEO generation and PWA configuration are retained.

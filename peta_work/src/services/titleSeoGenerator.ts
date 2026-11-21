@@ -472,7 +472,7 @@ export async function generateSeoFromTitle(
     };
   }
 
-  const models = routingMode === 'AUTO'
+  const models = routingMode === 'AUTO' && selectedModelId.startsWith('gpt-')
     ? Array.from(new Set([selectedModelId, ...AUTO_FALLBACK_CHAIN]))
     : [selectedModelId];
   let key = routingMode === 'MANUAL'

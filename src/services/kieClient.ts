@@ -360,7 +360,7 @@ export async function executeGeneration(
   // In AUTO mode: starts with selected (or default) and falls back down AUTO_FALLBACK_CHAIN
   // In MANUAL mode: only tries the user-selected model
   const modelsToTry: GatewayModelId[] =
-    routingMode === 'AUTO'
+    routingMode === 'AUTO' && selectedModelId.startsWith('gpt-')
       ? Array.from(new Set([selectedModelId, ...AUTO_FALLBACK_CHAIN]))
       : [selectedModelId];
 
@@ -1108,7 +1108,7 @@ async function requestSEOFromKie(
     };
   }
 
-  const models = routingMode === 'AUTO'
+  const models = routingMode === 'AUTO' && selectedModelId.startsWith('gpt-')
     ? Array.from(new Set([selectedModelId, ...AUTO_FALLBACK_CHAIN]))
     : [selectedModelId];
   let key = routingMode === 'MANUAL'
@@ -1442,7 +1442,7 @@ async function requestTitleFromKie(
     }};
   }
 
-  const models = routingMode === 'AUTO'
+  const models = routingMode === 'AUTO' && selectedModelId.startsWith('gpt-')
     ? Array.from(new Set([selectedModelId, ...AUTO_FALLBACK_CHAIN]))
     : [selectedModelId];
   const key = routingMode === 'MANUAL'
@@ -1638,7 +1638,7 @@ export async function generateYouTubeThumbnailText(
   if (!activeKeys.length) return { success: false, errorType: 'API_KEY_ERROR', errorMessage: 'Tidak ada Kunci KIE Aktif.', debugInfo: {
     selectedModel: getModelUIName(selectedModelId), gatewayModelId: selectedModelId, errorType: 'API_KEY_ERROR', errorMessage: 'Tidak ada Kunci KIE Aktif.', time: new Date().toLocaleTimeString()
   }};
-  const models = routingMode === 'AUTO' ? Array.from(new Set([selectedModelId, ...AUTO_FALLBACK_CHAIN])) : [selectedModelId];
+  const models = routingMode === 'AUTO' && selectedModelId.startsWith('gpt-') ? Array.from(new Set([selectedModelId, ...AUTO_FALLBACK_CHAIN])) : [selectedModelId];
   const key = routingMode === 'MANUAL' ? (keyManager.getManualSelectedKey() || activeKeys[0]) : (keyManager.getNextActiveKey() || activeKeys[0]);
   const prompt = `You are a YouTube thumbnail copywriter for PETA PIANO AI.\n\nFINAL YOUTUBE TITLE:\n${cleanTitle}\n\nCreate exactly ONE short Text on Thumbnail based ONLY on the actual title above. Extract its strongest message. Do not copy the full title. Use 2-6 meaningful words when possible, maximum 8 meaningful words. It may use one or two lines separated by a newline. Do not use fixed phrases, templates, technical metadata, BPM, musical key, track count, Style Prompt, AI, model names, or generation-process language. Return ONLY valid JSON with this exact shape: {"thumbnailText":"..."}`;
   for (const modelId of models) {

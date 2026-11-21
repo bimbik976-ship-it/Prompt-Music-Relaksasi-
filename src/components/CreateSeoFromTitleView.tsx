@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Sparkles,
   Copy,
@@ -8,7 +8,8 @@ import {
   KeyRound
 } from 'lucide-react';
 import { GatewayModelId, RoutingMode } from '../types';
-import { MODEL_CONFIG, getModelUIName } from '../config/models';
+import { MODEL_CONFIG, MODEL_GROUPS } from '../config/models';
+import { loadAvailableChatModels } from '../services/modelCatalog';
 import {
   generateSeoFromTitle,
   CreateSeoFromTitleSavedResult,
@@ -31,6 +32,8 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
 }) => {
   // Create SEO has its own model selection, initialized from the model selected for Style Prompt.
   const [seoModelId, setSeoModelId] = useState<GatewayModelId>(selectedModelId);
+  const [availableModels, setAvailableModels] = useState(Object.values(MODEL_CONFIG));
+  useEffect(() => { let mounted = true; loadAvailableChatModels().then((models) => { if (mounted) setAvailableModels(models); }); return () => { mounted = false; }; }, []);
 
   // Persisted state: loads last successful result so it never disappears on tab switch or re-render
   const [savedResult, setSavedResult] = useState<CreateSeoFromTitleSavedResult | null>(() => {
@@ -161,14 +164,12 @@ export const CreateSeoFromTitleView: React.FC<CreateSeoFromTitleViewProps> = ({
             value={seoModelId}
             onChange={(e) => setSeoModelId(e.target.value as GatewayModelId)}
             disabled={isGenerating}
-            className="w-full sm:max-w-[220px] rounded-lg bg-[#141824] border border-[#343b50] px-3 py-2.5 text-xs font-bold text-amber-400 outline-none focus:border-amber-500 disabled:opacity-50"
+            className="w-full sm:max-w-[240px] rounded-xl bg-[#101521] border border-[#3b465d] px-3 py-2.5 text-xs font-bold text-white outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-50 shadow-lg"
             aria-label="Pilih model Chat untuk Create SEO"
           >
-            {(Object.keys(MODEL_CONFIG) as GatewayModelId[]).map((modelId) => (
-              <option key={modelId} value={modelId} className="bg-[#141824] text-white">
-                {getModelUIName(modelId)}
-              </option>
-            ))}
+            {MODEL_GROUPS.map((provider) => <optgroup key={provider} label={provider}>
+              {availableModels.filter((model) => model.provider === provider).map((model) => <option key={model.gatewayId} value={model.gatewayId} className="bg-[#141824] text-white">{model.uiName}</option>)}
+            </optgroup>)}
           </select>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Sparkles,
   Copy,
@@ -33,7 +33,8 @@ import {
   MOODS,
   COUNTRIES
 } from '../config/options';
-import { MODEL_CONFIG, getModelUIName } from '../config/models';
+import { MODEL_CONFIG, MODEL_GROUPS } from '../config/models';
+import { loadAvailableChatModels } from '../services/modelCatalog';
 import { StyleIntensityVisualizer } from './StyleIntensityVisualizer';
 import { BATCH_SIZE } from '../config/batch';
 import { SafeDebugCard } from './SafeDebugCard';
@@ -94,6 +95,8 @@ export const PetaGeneratorView: React.FC<PetaGeneratorViewProps> = ({
   thumbnailError,
   onRegenerateThumbnail,
 }) => {
+  const [availableModels, setAvailableModels] = useState(Object.values(MODEL_CONFIG));
+  useEffect(() => { let mounted = true; loadAvailableChatModels().then((models) => { if (mounted) setAvailableModels(models); }); return () => { mounted = false; }; }, []);
   const [copied, setCopied] = useState(false);
   const [copiedTitle, setCopiedTitle] = useState(false);
   const [copiedDescription, setCopiedDescription] = useState(false);
@@ -269,32 +272,21 @@ export const PetaGeneratorView: React.FC<PetaGeneratorViewProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          {(Object.keys(MODEL_CONFIG) as GatewayModelId[]).map((mId) => {
-            const cfg = MODEL_CONFIG[mId];
-            const isSelected = selectedModelId === mId;
-            return (
-              <button
-                key={mId}
-                onClick={() => onSelectModelId(mId)}
-                className={`p-3 rounded-xl text-left border transition relative flex flex-col justify-between ${
-                  isSelected
-                    ? 'bg-amber-500/10 border-amber-500/60 shadow-[0_0_15px_rgba(245,158,11,0.1)]'
-                    : 'bg-[#0f1118] border-[#222736] hover:border-[#32394a]'
-                }`}
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-bold text-xs text-white">{cfg.uiName}</span>
-                    {isSelected && <Check className="w-3.5 h-3.5 text-amber-400" />}
-                  </div>
-                  <div className="text-[10px] font-mono text-amber-400/80 mb-1.5">
-                    Gateway ID: {cfg.gatewayId}
-                  </div>
-                </div>
-                <p className="text-[10px] text-slate-400 line-clamp-2">{cfg.description}</p>
-              </button>
-            );
+        <div className="space-y-3">
+          {MODEL_GROUPS.map((provider) => {
+            const providerModels = availableModels.filter((model) => model.provider === provider);
+            const theme = provider === 'OpenAI' ? 'blue' : provider === 'Gemini' ? 'violet' : 'emerald';
+            const themeClasses = theme === 'blue' ? 'text-sky-300 border-sky-500/30 bg-sky-500/10' : theme === 'violet' ? 'text-violet-300 border-violet-500/30 bg-violet-500/10' : 'text-emerald-300 border-emerald-500/30 bg-emerald-500/10';
+            return <section key={provider} className="rounded-xl border border-[#283044] bg-[#0d111b] p-3">
+              <div className="flex items-center gap-2 mb-2"><span className={`rounded-md border px-2 py-1 text-[10px] font-extrabold uppercase tracking-widest ${themeClasses}`}>{provider}</span><span className="text-[10px] text-slate-500">{providerModels.length} model</span></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">{providerModels.map((cfg) => {
+                const isSelected = selectedModelId === cfg.gatewayId;
+                return <button key={cfg.gatewayId} onClick={() => onSelectModelId(cfg.gatewayId)} className={`p-3 rounded-lg text-left border transition ${isSelected ? `${themeClasses} ring-1 ring-current` : 'bg-[#111725] border-[#252d40] hover:border-[#46516b]'}`}>
+                  <div className="flex items-center justify-between gap-2"><span className="font-bold text-xs text-white">{cfg.uiName}</span>{isSelected && <Check className="w-3.5 h-3.5 shrink-0" />}</div>
+                  <div className="text-[9px] font-mono text-slate-500 mt-1 break-all">{cfg.gatewayId}</div>
+                </button>;
+              })}</div>
+            </section>;
           })}
         </div>
       </div>

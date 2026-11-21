@@ -8,7 +8,7 @@ const PORT = Number(process.env.PORT) || 3000;
 app.use(express.json({ limit: '10mb' }));
 
 // Allowed gateway IDs only
-const ALLOWED_MODELS = new Set(['gpt-6-astra', 'gpt-5-6-luna', 'gpt-5-5']);
+// Model validation is provider-aware in the unified chat proxy.
 
 /**
  * Health check endpoint
@@ -111,200 +111,144 @@ app.post('/api/kie/test', handleCreditCheck);
 app.get('/api/kie/test', handleCreditCheck);
 app.get('/api/kie/credit', handleCreditCheck);
 
-/**
- * Proxy route for KIE /codex/v1/responses
- * Target: https://api.kie.ai/codex/v1/responses
- */
-const handleCodexGeneration = async (req: express.Request, res: express.Response) => {
+/** Unified KIE chat proxy. Incoming browser payload remains Responses-shaped;
+ * provider-specific wire formats are translated server-side. */
+const extractInputText = (input: any): string => {
+  if (typeof input === 'string') return input;
+  if (!Array.isArray(input)) return '';
+  return input.map((item: any) => {
+    if (typeof item === 'string') return item;
+    if (Array.isArray(item?.content)) return item.content.map((part: any) => part?.text || part?.input_text || '').join('\n');
+    return item?.content || item?.text || '';
+  }).join('\n');
+};
+
+const toResponsesEnvelope = (model: string, text: string, raw: any) => ({
+  id: raw?.id || `kie-${Date.now()}`,
+  object: 'response',
+  model,
+  status: 'completed',
+  output: [{ id: 'msg_kie', type: 'message', role: 'assistant', content: [{ type: 'output_text', text: text || '' }] }],
+  output_text: text || '',
+  usage: raw?.usage || raw?.usageMetadata || undefined
+});
+
+async function handleKieUnified(req: any, res: any) {
   const authHeader = req.headers['authorization'] || req.headers['x-kie-key'];
   const key = typeof authHeader === 'string' ? authHeader.replace(/^Bearer\s+/i, '').trim() : '';
+  if (!key) return res.status(401).json({ errorType: 'INVALID_API_KEY', httpStatus: 401, message: 'KIE API key diperlukan.' });
 
-  if (!key) {
-    return res.status(401).json({
-      error: 'Missing API key',
-      errorType: 'INVALID_API_KEY',
-      httpStatus: 401,
-      message: 'KIE API key is required to perform generation.'
-    });
-  }
+  const body = req.body || {};
+  const model = String(body.model || '');
+  const prompt = extractInputText(body.input);
+  if (!model || !prompt) return res.status(400).json({ errorType: 'BAD_REQUEST', httpStatus: 400, message: 'Model dan input prompt wajib diisi.' });
 
-  const { model, input, reasoning, stream } = req.body || {};
+  let endpoint = 'https://api.kie.ai/codex/v1/responses';
+  let payload: any = body;
+  let provider: 'openai' | 'claude' | 'gemini' = 'openai';
 
-  // Strict Model Validation
-  if (!model || !ALLOWED_MODELS.has(model)) {
-    return res.status(400).json({
-      error: 'Invalid Model ID',
-      errorType: 'MODEL_OR_REQUEST_UNSUPPORTED',
-      httpStatus: 400,
-      message: `Model "${model}" is not permitted. Only centralized gateway IDs (gpt-6-astra, gpt-5-6-luna, gpt-5-5) are allowed.`
-    });
-  }
-
-  // Preserve the official KIE Responses API reasoning control when supplied.
-  // Do not silently strip model parameters that are part of the documented request.
-  const payload: Record<string, any> = {
-    model,
-    stream: stream === true,
-    input: Array.isArray(input) ? input : [],
-  };
-  if (reasoning && typeof reasoning === 'object') {
-    const effort = reasoning.effort;
-    if (typeof effort === 'string' && ['low', 'medium', 'high', 'xhigh'].includes(effort)) {
-      payload.reasoning = { effort };
-    }
+  if (model.startsWith('claude-')) {
+    provider = 'claude';
+    endpoint = 'https://api.kie.ai/claude/v1/messages';
+    payload = { model, max_tokens: 8192, stream: false, messages: [{ role: 'user', content: prompt }] };
+  } else if (model.startsWith('gemini-3.1-pro')) {
+    provider = 'gemini';
+    endpoint = 'https://api.kie.ai/gemini-3.1-pro/v1/chat/completions';
+    payload = { model, stream: false, messages: [{ role: 'user', content: prompt }], ...(body.text?.format?.schema ? { response_format: { type: 'json_schema', json_schema: { name: body.text.format.name || 'structured_output', strict: true, schema: body.text.format.schema } } } : {}) };
+  } else if (model.startsWith('gemini-')) {
+    provider = 'gemini';
+    endpoint = `https://api.kie.ai/gemini/v1/models/${encodeURIComponent(model)}:streamGenerateContent?alt=sse`;
+    payload = { contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 8192 } };
+  } else if (!model.startsWith('gpt-')) {
+    return res.status(400).json({ errorType: 'MODEL_OR_REQUEST_UNSUPPORTED', httpStatus: 400, message: `Model ${model} belum terdaftar pada konfigurasi aplikasi.` });
   }
 
   try {
-    let upstreamRes: Response | null = null;
-    let lastNetworkError: any = null;
-
-    // Retry only transient upstream gateway failures. The browser/client layer
-    // still performs model fallback after this proxy-level recovery.
-    for (let attempt = 1; attempt <= 2; attempt++) {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 120000);
-      try {
-        upstreamRes = await fetch('https://api.kie.ai/codex/v1/responses', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${key}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload),
-          signal: controller.signal
-        });
-      } catch (err: any) {
-        lastNetworkError = err;
-      } finally {
-        clearTimeout(timeout);
-      }
-
-      if (upstreamRes && ![500, 502, 503, 504].includes(upstreamRes.status)) break;
-      if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 1200 * attempt));
-    }
-
-    if (!upstreamRes) {
-      const err: any = lastNetworkError;
-      const isAbort = err?.name === 'AbortError';
-      return res.status(isAbort ? 504 : 502).json({
-        errorType: isAbort ? 'GATEWAY_TIMEOUT' : 'NETWORK_ERROR',
-        httpStatus: isAbort ? 504 : 502,
-        message: isAbort ? 'KIE Gateway timeout.' : `Network failure: ${err?.message || 'unknown error'}`
-      });
-    }
-
-    const status = upstreamRes.status;
-    const contentType = upstreamRes.headers.get('content-type') || '';
-
-    if (contentType.includes('text/event-stream')) {
-      res.status(status);
-      res.setHeader('Content-Type', 'text/event-stream');
-      const text = await upstreamRes.text();
-      return res.send(text);
-    }
-
-    const responseBody = await upstreamRes.text();
-    let parsed: any = null;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 120000);
+    let upstream: Response;
     try {
-      parsed = JSON.parse(responseBody);
-    } catch {}
-
-    const effectiveCode = (typeof parsed?.code === 'number' && parsed.code >= 400) ? parsed.code : status;
-
-    // HTTP Error Classification
-    if (effectiveCode === 400) {
-      return res.status(400).json({
-        errorType: 'BAD_REQUEST',
-        httpStatus: 400,
-        message: parsed?.msg || 'Permintaan tidak valid (BAD_REQUEST).',
-        raw: responseBody
+      upstream = await fetch(endpoint, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', ...(provider === 'claude' ? { 'anthropic-version': '2023-06-01' } : {}) },
+        body: JSON.stringify(payload),
+        signal: controller.signal
       });
+    } finally { clearTimeout(timeout); }
+
+    const rawText = await upstream.text();
+    let data: any = null;
+    try { data = JSON.parse(rawText); } catch {}
+    if (!upstream.ok || (typeof data?.code === 'number' && data.code !== 200)) {
+      const status = upstream.ok ? (data?.code || 502) : upstream.status;
+      return res.status(status >= 400 && status <= 599 ? status : 502).json({ errorType: status === 401 ? 'INVALID_API_KEY' : status === 429 ? 'RATE_LIMITED' : status >= 500 ? 'GATEWAY_ERROR' : 'MODEL_OR_REQUEST_UNSUPPORTED', httpStatus: status, message: data?.msg || data?.error?.message || data?.message || rawText.slice(0, 1200) || `KIE request failed (${status})`, raw: rawText.slice(0, 4000) });
     }
 
-    if (effectiveCode === 401) {
-      return res.status(401).json({
-        errorType: 'INVALID_API_KEY',
-        httpStatus: 401,
-        message: parsed?.msg || 'KIE API key tidak valid (INVALID_API_KEY).',
-        raw: responseBody
-      });
+    let text = '';
+    if (provider === 'claude') {
+      text = (data?.content || []).filter((part: any) => part.type === 'text').map((part: any) => part.text || '').join('\n');
+    } else if (provider === 'gemini' && model.startsWith('gemini-3.1-pro')) {
+      text = data?.choices?.[0]?.message?.content || '';
+    } else if (provider === 'gemini') {
+      // KIE native Gemini streaming chunks; aggregate candidate text parts.
+      for (const line of rawText.split(/\r?\n/)) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+        const chunkText = trimmed.slice(5).trim();
+        if (!chunkText || chunkText === '[DONE]') continue;
+        try {
+          const chunk = JSON.parse(chunkText);
+          text += (chunk?.candidates || []).flatMap((candidate: any) => candidate?.content?.parts || []).map((part: any) => part?.text || '').join('');
+        } catch {}
+      }
+    } else {
+      // Preserve the OpenAI Responses payload and response shape for existing GPT models.
+      if (data) return res.status(upstream.status).json(data);
+      return res.status(upstream.status).send(rawText);
     }
-
-    if (effectiveCode === 403) {
-      return res.status(403).json({
-        errorType: 'FORBIDDEN',
-        httpStatus: 403,
-        message: parsed?.msg || 'Akses ke KIE Gateway dilarang (FORBIDDEN).',
-        raw: responseBody
-      });
-    }
-
-    if (effectiveCode === 404) {
-      return res.status(404).json({
-        errorType: 'ENDPOINT_NOT_FOUND',
-        httpStatus: 404,
-        endpoint: 'https://api.kie.ai/codex/v1/responses',
-        message: 'KIE endpoint tidak ditemukan.',
-        raw: responseBody
-      });
-    }
-
-    if (effectiveCode === 409) {
-      return res.status(409).json({
-        errorType: 'CONFLICT',
-        httpStatus: 409,
-        message: parsed?.msg || 'Terjadi konflik permintaan (CONFLICT).',
-        raw: responseBody
-      });
-    }
-
-    if (effectiveCode === 422) {
-      return res.status(422).json({
-        errorType: 'MODEL_OR_REQUEST_UNSUPPORTED',
-        httpStatus: 422,
-        message: parsed?.msg || `Model "${model}" (${model}) tidak didukung oleh gateway (MODEL_OR_REQUEST_UNSUPPORTED).`,
-        raw: responseBody
-      });
-    }
-
-    if (effectiveCode === 429) {
-      return res.status(429).json({
-        errorType: 'RATE_LIMITED',
-        httpStatus: 429,
-        message: parsed?.msg || 'Batas kuota KIE Gateway terlampaui (RATE_LIMITED).',
-        raw: responseBody
-      });
-    }
-
-    if (effectiveCode >= 500) {
-      return res.status(effectiveCode).json({
-        errorType: 'GATEWAY_ERROR',
-        httpStatus: effectiveCode,
-        message: parsed?.msg || `KIE Gateway mengalami gangguan server (GATEWAY_ERROR - HTTP ${effectiveCode}).`,
-        raw: responseBody
-      });
-    }
-
-    // Success pass-through
-    res.status(status);
-    if (parsed) {
-      return res.json(parsed);
-    }
-    return res.send(responseBody);
+    if (!text.trim()) return res.status(502).json({ errorType: 'MODEL_EMPTY_RESPONSE', httpStatus: 502, message: `Model ${model} tidak mengembalikan teks.`, raw: rawText.slice(0, 2000) });
+    return res.status(200).json(toResponsesEnvelope(model, text, data));
   } catch (err: any) {
-    const isAbort = err?.name === 'AbortError';
-    return res.status(isAbort ? 504 : 502).json({
-      errorType: isAbort ? 'GATEWAY_TIMEOUT' : 'NETWORK_ERROR',
-      httpStatus: isAbort ? 504 : 502,
-      message: isAbort
-        ? 'KIE Gateway tidak merespons dalam 90 detik.'
-        : 'Network failure calling KIE Gateway: ' + (err.message || 'Cannot reach endpoint')
-    });
+    const aborted = err?.name === 'AbortError';
+    return res.status(aborted ? 504 : 502).json({ errorType: aborted ? 'GATEWAY_TIMEOUT' : 'NETWORK_ERROR', httpStatus: aborted ? 504 : 502, message: aborted ? 'KIE Gateway timeout.' : `Network failure: ${err?.message || 'unknown error'}` });
   }
-};
+}
 
-app.post('/api/kie/responses', handleCodexGeneration);
-app.post('/codex/v1/responses', handleCodexGeneration);
+app.get('/api/kie/models', async (req, res) => {
+  const auth = req.headers.authorization || '';
+  const key = typeof auth === 'string' ? auth.replace(/^Bearer\s+/i, '').trim() : '';
+  if (!key) return res.status(401).json({ message: 'KIE API key diperlukan.' });
+  try {
+    const openaiRes = await fetch('https://api.kie.ai/openai/v1/models', { headers: { Authorization: `Bearer ${key}` } });
+    const openai = await openaiRes.json().catch(() => ({}));
+    let claudeRows: any[] = []; let afterId = '';
+    let claudeOk = false;
+    for (let page = 0; page < 20; page++) {
+      const url = new URL('https://api.kie.ai/anthropic/v1/models');
+      if (afterId) url.searchParams.set('after_id', afterId);
+      const response = await fetch(url, { headers: { Authorization: `Bearer ${key}` } });
+      if (!response.ok) break;
+      claudeOk = true;
+      const pageData: any = await response.json().catch(() => ({}));
+      if (Array.isArray(pageData?.data)) claudeRows.push(...pageData.data);
+      if (!pageData?.has_more || !pageData?.last_id || pageData.last_id === afterId) break;
+      afterId = pageData.last_id;
+    }
+    const gemini = [
+      { id: 'gemini-3.1-pro', name: 'Gemini 3.1 Pro' }, { id: 'gemini-3-6-flash', name: 'Gemini 3.6 Flash' },
+      { id: 'gemini-3-8-flash', name: 'Gemini 3.8 Flash' }, { id: 'gemini-4-neon', name: 'Gemini 4 Neon' }, { id: 'gemini-4-carbon', name: 'Gemini 4 Carbon' }
+    ].map(m => ({ ...m, provider: 'Gemini' }));
+    const data = [
+      ...(Array.isArray(openai?.models) ? openai.models.map((m: any) => ({ id: m.slug, name: m.display_name || m.slug, provider: 'OpenAI' })) : Array.isArray(openai?.data) ? openai.data.map((m: any) => ({ id: m.id, name: m.id, provider: 'OpenAI' })) : []),
+      ...gemini,
+      ...claudeRows.map((m: any) => ({ id: m.id, name: m.display_name || m.id, provider: 'Claude' }))
+    ].filter((m: any) => typeof m.id === 'string' && m.id);
+    res.json({ data, source: { openai: openaiRes.ok, claude: claudeOk, gemini: 'KIE documented catalog' } });
+  } catch (error: any) { res.status(502).json({ message: error?.message || 'Gagal mengambil katalog model.' }); }
+});
+
+app.post('/api/kie/responses', handleKieUnified);
+app.post('/codex/v1/responses', handleKieUnified);
 
 async function startServer() {
   const isProduction =

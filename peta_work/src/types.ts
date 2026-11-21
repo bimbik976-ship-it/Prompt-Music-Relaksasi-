@@ -2,7 +2,7 @@
  * PETA PIANO AI - Type Definitions
  */
 
-export type GatewayModelId = 'gpt-6-astra' | 'gpt-5-6-luna' | 'gpt-5-5';
+export type GatewayModelId = string;
 
 export interface ModelConfigItem {
   uiName: string;
